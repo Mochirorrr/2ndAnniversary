@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FDF6F8">
+<title>2nd Anniversary · Fauziah Callysta Hidayat</title>
+<meta name="description" content="Sebuah keepsake digital untuk dua tahun bersama.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   0. DESIGN TOKENS  — ubah warna & font di sini
+   ========================================================= */
+:root{
+  --bg:#FDF6F8;            /* warm blush cream */
+  --bg-2:#F9EBEF;          /* blush lembut (seksi selang-seling) */
+  --rose:#E8A0B5;          /* soft petal pink */
+  --rose-d:#D9829B;        /* dusty rose */
+  --gold:#C5A059;          /* muted champagne gold */
+  --gold-d:#B8924A;        /* soft brass */
+  --gold-text:#8A6A2B;     /* gold versi gelap, khusus teks kecil (kontras aman) */
+  --ink:#2E1F24;           /* deep espresso plum */
+  --ink-2:#6E565E;         /* muted rose-gray */
+  --hair:rgba(197,160,89,.55);
+
+  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --sans:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  --spring:cubic-bezier(.34,1.56,.64,1);
+
+  --gutter:clamp(20px,6vw,80px);
+  --fs-body:clamp(1rem,.95rem + .25vw,1.125rem);
+}
+
+/* =========================================================
+   1. RESET & BASE
+   ========================================================= */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
+html.is-locked,html.is-locked body{overflow:hidden}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font:400 var(--fs-body)/1.7 var(--sans);
+  -webkit-font-smoothing:antialiased;overflow-x:clip;
+}
+[hidden]{display:none!important}
+img,svg{display:block;max-width:100%}
+h1,h2,h3,p,ol,ul,dl,dd{margin:0}
+ol,ul{padding:0;list-style:none}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:4px}
+::selection{background:var(--rose);color:var(--ink)}
+
+/* tekstur kertas sangat halus, hampir tak terlihat */
+body::before{
+  content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.045;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .18  0 0 0 0 .12  0 0 0 0 .14  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.wrap{max-width:1180px;margin-inline:auto}
+.section{position:relative;padding:clamp(80px,14vw,180px) var(--gutter)}
+.section--tint{background:var(--bg-2)}
+.serif{font-family:var(--serif)}
+
+/* progress bar bacaan */
+.progress{position:fixed;top:0;left:0;width:100%;height:2px;z-index:60;background:var(--gold);transform-origin:0 50%;transform:scaleX(0)}
+
+/* =========================================================
+   2. KOMPONEN UMUM (chapter marker, heading, tombol, reveal)
+   ========================================================= */
+.chapter-mark{display:flex;align-items:center;gap:16px;margin-bottom:clamp(20px,4vw,36px);color:var(--gold-text);
+  font:600 .72rem/1 var(--sans);letter-spacing:.22em;text-transform:uppercase}
+.chapter-mark i{display:block;height:1px;width:clamp(48px,12vw,120px);background:var(--gold)}
+.h2{font:500 clamp(2.3rem,1.4rem + 4.6vw,4.8rem)/1.02 var(--serif);letter-spacing:-.01em}
+.h2 em{font-style:italic;color:var(--rose-d)}
+.lede{color:var(--ink-2);max-width:46ch;margin-top:clamp(16px,3vw,28px)}
+
+.btn{
+  --edge:#9C7B36;
+  display:inline-flex;align-items:center;justify-content:center;gap:.6em;
+  min-height:52px;padding:16px 30px;border-radius:14px;background:var(--gold);color:var(--ink);
+  font:600 .95rem/1 var(--sans);letter-spacing:.02em;
+  box-shadow:0 4px 0 var(--edge);
+  transition:transform .16s var(--spring),box-shadow .16s var(--spring),background .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn:hover{background:#CDA862}
+.btn:active{transform:translateY(4px);box-shadow:0 0 0 var(--edge)}
+.btn--ghost{--edge:rgba(197,160,89,.5);background:transparent;border:1px solid var(--gold);color:var(--ink);box-shadow:0 3px 0 var(--edge)}
+.btn--ghost:hover{background:rgba(197,160,89,.1)}
+.btn--ghost:active{transform:translateY(3px)}
+
+.reveal{opacity:0;transform:translateY(26px);transition:opacity 1s var(--ease-out),transform 1s var(--ease-out);transition-delay:var(--d,0s)}
+.reveal.in{opacity:1;transform:none}
+
+.ph{ /* placeholder yang mudah dicari & diganti */
+  color:var(--gold-text);background:linear-gradient(transparent 92%,var(--gold) 92%);
+  background-size:100% 100%;padding-inline:1px
+}
+
+/* =========================================================
+   3. INTRO (layar penuh)
+   ========================================================= */
+.intro{
+  position:fixed;inset:0;z-index:100;height:100vh;height:100dvh;
+  display:grid;place-items:center;padding:24px;
+  background:radial-gradient(120% 90% at 50% 38%,#FFF9FB 0%,var(--bg) 45%,var(--bg-2) 100%);
+  transform:translateY(0);will-change:transform;
+}
+.intro::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--gold)}
+.intro.is-leaving{transform:translateY(-101%);transition:transform 1s var(--ease-out)}
+.intro.is-leaving.is-fast{transition-duration:.7s}
+.intro.is-leaving .intro__inner{opacity:0;transform:scale(.96) translateY(-2vh);transition:opacity .5s ease,transform .8s var(--ease-out)}
+
+.intro__inner{display:flex;flex-direction:column;align-items:center;text-align:center;width:min(92vw,560px)}
+.intro__float{animation:float 7s ease-in-out 2.2s infinite}
+@keyframes float{50%{transform:translateY(-6px)}}
+.intro__emblem{width:clamp(150px,42vmin,260px);height:auto;overflow:visible}
+.intro__eyebrow{margin-top:clamp(20px,5vmin,40px);font:600 .74rem/1 var(--sans);letter-spacing:.28em;text-transform:uppercase;color:var(--gold-text)}
+.intro__for{margin-top:14px;font:400 clamp(1.1rem,3.6vmin,1.4rem)/1.3 var(--serif);font-style:italic;color:var(--ink-2)}
+.intro__name{margin-top:4px;font:500 clamp(1.7rem,6.4vmin,2.8rem)/1.1 var(--serif);letter-spacing:-.005em}
+.intro .btn{margin-top:clamp(26px,6vmin,44px)}
+.intro__skip{
+  position:absolute;top:max(16px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right));
+  padding:12px 14px;font:500 .8rem/1 var(--sans);letter-spacing:.08em;color:var(--ink-2);
+  border-radius:10px;transition:color .2s;min-height:44px
+}
+.intro__skip:hover{color:var(--ink)}
+
+/* keyframes intro: kondisi awal tersembunyi, dimainkan saat .is-playing */
+.anim{opacity:0}
+.e-c{transform-box:fill-box;transform-origin:center}
+.e-ring{stroke-dasharray:1;stroke-dashoffset:1}
+.e-num{transform-box:fill-box;transform-origin:center}
+.intro.is-playing .e-c--l{animation:circL 1.1s var(--spring) .15s both}
+.intro.is-playing .e-c--r{animation:circR 1.1s var(--spring) .3s both}
+.intro.is-playing .e-ring{animation:ring 1.7s var(--ease-out) .55s both}
+.intro.is-playing .e-num{animation:pop .8s var(--spring) 1s both}
+.intro.is-playing .e-dot{animation:pop .7s var(--spring) calc(1.5s + var(--i,0)*.1s) both}
+.intro.is-playing .i-line{animation:lineIn .95s var(--ease-out) calc(1.2s + var(--i,0)*.15s) both}
+.intro.is-playing .btn.i-line{animation:btnIn .9s var(--spring) 1.7s both}
+.intro.is-playing .intro__skip.i-line{animation:lineIn .8s ease .9s both}
+@keyframes circL{from{opacity:0;transform:translateX(-80px) scale(.55)}to{opacity:1;transform:none}}
+@keyframes circR{from{opacity:0;transform:translateX(80px) scale(.55)}to{opacity:1;transform:none}}
+@keyframes ring{from{opacity:1;stroke-dashoffset:1}to{opacity:1;stroke-dashoffset:0}}
+@keyframes pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+@keyframes lineIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes btnIn{from{opacity:0;transform:translateY(24px) scale(.9)}to{opacity:1;transform:none}}
+
+/* =========================================================
+   4. HERO
+   ========================================================= */
+.hero{
+  position:relative;min-height:100vh;min-height:100dvh;overflow:clip;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:clamp(88px,14vh,150px) var(--gutter) clamp(48px,8vh,96px);
+  background:
+    radial-gradient(60% 50% at 85% 20%,rgba(232,160,181,.18),transparent 70%),
+    radial-gradient(50% 40% at 5% 95%,rgba(197,160,89,.10),transparent 70%);
+}
+.hero__numeral{
+  position:absolute;z-index:0;right:-3vw;top:52%;transform:translateY(-50%);pointer-events:none;
+  font:500 clamp(14rem,58vw,40rem)/.8 var(--serif);color:transparent;-webkit-text-stroke:1px rgba(197,160,89,.4);
+  user-select:none;opacity:0;transition:opacity 2s var(--ease-out) .3s
+}
+body.is-ready .hero__numeral{opacity:1}
+.hero .wrap{position:relative;z-index:2;width:100%}
+.eyebrow{font:600 .72rem/1.4 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--gold-text);display:flex;align-items:center;gap:14px}
+.eyebrow::before{content:"";width:40px;height:1px;background:var(--gold)}
+.hero__title{margin-top:clamp(18px,3vw,32px);font:500 clamp(3.4rem,14vw,9.2rem)/.92 var(--serif);letter-spacing:-.02em}
+.mask{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em}
+.mask>span{display:block;transform:translateY(112%);transition:transform 1.2s var(--ease-out) var(--d,0s)}
+.mask--it>span{font-style:italic;color:var(--rose-d)}
+.reveal-lines.in .mask>span{transform:none}
+.hero__for{margin-top:clamp(20px,3.5vw,36px);font:400 clamp(1.1rem,.8rem + 1.4vw,1.5rem)/1.3 var(--serif);font-style:italic;color:var(--ink-2)}
+.hero__for strong{display:block;margin-top:4px;font:500 clamp(1.7rem,1rem + 3.6vw,3rem)/1.1 var(--serif);font-style:normal;color:var(--ink);letter-spacing:-.005em}
+.hero__sub{margin-top:clamp(20px,3vw,32px);max-width:36ch;font:400 clamp(1.15rem,1rem + .8vw,1.5rem)/1.45 var(--serif);color:var(--ink-2)}
+.hero__since{margin-top:20px;font:500 .8rem/1.5 var(--sans);letter-spacing:.06em;color:var(--ink-2)}
+.hero__stats{margin-top:clamp(36px,7vh,72px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));max-width:720px;border-top:1px solid var(--hair)}
+.stat{padding:18px 0 0 clamp(0px,2vw,24px)}
+.stat+.stat{border-left:1px solid var(--hair);padding-left:clamp(12px,3vw,32px)}
+.stat dt{order:2;margin-top:6px;font:600 .66rem/1.3 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2)}
+.stat{display:flex;flex-direction:column}
+.stat dd{order:1;font:500 clamp(2.3rem,1rem + 6vw,4.6rem)/1 var(--serif);font-variant-numeric:lining-nums}
+.scrollcue{margin-top:clamp(32px,6vh,56px);display:flex;align-items:center;gap:14px;font:500 .7rem/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2)}
+.scrollcue i{display:block;width:1px;height:44px;background:linear-gradient(var(--gold),transparent);transform-origin:top;animation:cue 2.4s var(--ease-out) infinite}
+@keyframes cue{0%{transform:scaleY(0)}60%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+
+/* =========================================================
+   5. CENTERPIECE — HATI "I LOVE YOU"
+   ========================================================= */
+.love__head{text-align:center;margin-inline:auto;max-width:640px}
+.love__head .chapter-mark{justify-content:center}
+.love__head .lede{margin-inline:auto}
+.love__grid{margin-top:clamp(36px,7vw,72px);display:grid;gap:clamp(28px,5vw,56px);align-items:center;justify-items:center}
+.heart{width:min(100%,540px);aspect-ratio:400/360;position:relative;container-type:inline-size}
+.heart svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.h-fill{fill:rgba(232,160,181,.16);transform-box:view-box;transform-origin:50% 50%;animation:breathe 5.5s ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(1.025)}}
+.h-inner{fill:none;stroke:var(--rose);stroke-width:1;stroke-dasharray:2 7;transform:scale(.88);transform-box:view-box;transform-origin:50% 50%;opacity:.9}
+.h-outline{fill:none;stroke:var(--gold);stroke-width:1.6;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 2.8s var(--ease-out) .2s}
+.heart.in .h-outline{stroke-dashoffset:0}
+.node{cursor:pointer;opacity:0;transition:opacity .6s ease var(--d,0s)}
+.heart.in .node{opacity:1}
+.node__hit{fill:transparent}
+.node__dot{fill:var(--bg);stroke:var(--gold);stroke-width:1.2;transition:r .35s var(--spring),fill .3s,stroke .3s;r:3.4px}
+.node.is-active .node__dot{r:6.5px;fill:var(--rose-d);stroke:var(--gold-d)}
+.comet{fill:var(--gold);opacity:.9}
+.heart__center{
+  position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);width:56%;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:1.6cqw;pointer-events:none
+}
+.heart__phrase{font:500 clamp(1.1rem,5.4vw,1.9rem)/1.12 var(--serif);font-style:italic;text-wrap:balance;letter-spacing:-.005em}
+.heart__roman{font:500 .75rem/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-text)}
+@supports (width:1cqw){
+  .heart__phrase{font-size:max(1.05rem,7.2cqw)}
+  .heart__roman{font-size:max(.68rem,2.5cqw)}
+}
+.swap{transition:opacity .26s ease,transform .26s var(--ease-out)}
+.is-swapping .swap{opacity:0;transform:translateY(6px)}
+
+.lang-panel{width:min(100%,540px)}
+.lang-panel__count{font:600 .72rem/1 var(--sans);letter-spacing:.22em;color:var(--gold-text)}
+.lang-panel__lang{margin-top:10px;font:500 clamp(1.9rem,1.2rem + 2.6vw,2.8rem)/1.05 var(--serif)}
+.lang-panel dl{margin-top:20px;display:grid;gap:14px;border-top:1px solid var(--hair);padding-top:18px}
+.lang-panel dt{font:600 .66rem/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2)}
+.lang-panel dd{margin-top:6px;color:var(--ink)}
+.ctrls{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap}
+.ctrl{min-width:48px;min-height:48px;padding:0 18px;border:1px solid var(--hair);border-radius:12px;font:600 .82rem/1 var(--sans);letter-spacing:.04em;transition:background .2s,transform .16s var(--spring)}
+.ctrl:hover{background:rgba(197,160,89,.12)}
+.ctrl:active{transform:scale(.95)}
+.chips{margin-top:clamp(28px,5vw,48px);display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:860px;margin-inline:auto}
+.chip{min-height:40px;padding:8px 16px;border:1px solid transparent;border-radius:999px;font:500 .82rem/1 var(--sans);color:var(--ink-2);transition:all .3s var(--ease-out)}
+.chip:hover{color:var(--ink);border-color:var(--hair)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+@media(min-width:900px){
+  .love__grid{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);justify-items:stretch}
+  .heart{justify-self:center}
+}
+
+/* =========================================================
+   6. BAB I — SURAT
+   ========================================================= */
+.letter{display:grid;gap:clamp(32px,6vw,64px)}
+.letter__body{max-width:62ch}
+.letter__hello{font:italic 500 clamp(1.8rem,1.2rem + 2vw,2.6rem)/1.2 var(--serif);margin-bottom:1.1em}
+.letter__body p{margin-bottom:1.7em}
+.letter__sign{margin-top:2.4em;padding-top:1.4em;border-top:1px solid var(--hair);font:400 .9rem/1.6 var(--sans);color:var(--ink-2)}
+.letter__sign strong{display:block;margin-top:4px;font:italic 500 2rem/1.1 var(--serif);color:var(--ink)}
+@media(min-width:900px){
+  .letter{grid-template-columns:minmax(0,4fr) minmax(0,7fr)}
+  .letter__head{position:sticky;top:14vh;align-self:start}
+}
+
+/* =========================================================
+   7. BAB II — LINIMASA
+   ========================================================= */
+.timeline{position:relative;margin-top:clamp(40px,7vw,80px)}
+.timeline::before{content:"";position:absolute;left:11px;top:6px;bottom:0;width:1px;background:linear-gradient(var(--gold),rgba(197,160,89,.12))}
+.tl{position:relative;padding:0 0 clamp(44px,9vw,72px) 46px}
+.tl__dot{position:absolute;left:4px;top:.55em;width:15px;height:15px;border-radius:50%;background:var(--bg-2);border:1px solid var(--gold);transform:scale(0);transition:transform .8s var(--spring) .2s}
+.tl__dot::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--rose-d)}
+.tl.in .tl__dot{transform:scale(1)}
+.tl__when{font:600 .7rem/1.3 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--gold-text)}
+.tl__title{margin-top:8px;font:500 clamp(1.7rem,1.1rem + 2.2vw,2.6rem)/1.1 var(--serif)}
+.tl__text{margin-top:12px;color:var(--ink-2);max-width:44ch}
+.tl__memory{margin-top:16px;padding:14px 0 0;border-top:1px dashed var(--hair);font:italic 400 1.1rem/1.5 var(--serif);color:var(--ink);max-width:44ch}
+@media(min-width:880px){
+  .timeline::before{left:50%}
+  .tl{display:grid;grid-template-columns:1fr 1fr;padding:0 0 clamp(64px,8vw,100px)}
+  .tl__dot{left:calc(50% - 7px)}
+  .tl__body{grid-column:1;justify-self:end;text-align:right;padding-right:clamp(40px,5vw,72px);max-width:520px}
+  .tl__body .tl__text,.tl__body .tl__memory{margin-left:auto}
+  .tl:nth-child(even) .tl__body{grid-column:2;justify-self:start;text-align:left;padding-right:0;padding-left:clamp(40px,5vw,72px);margin-top:48px}
+  .tl:nth-child(even) .tl__body .tl__text,.tl:nth-child(even) .tl__body .tl__memory{margin-left:0}
+}
+
+/* =========================================================
+   8. BAB III — HAL-HAL KECIL (accordion editorial)
+   ========================================================= */
+.reasons{margin-top:clamp(36px,6vw,72px);max-width:900px}
+.reason{border-top:1px solid var(--hair)}
+.reason:last-child{border-bottom:1px solid var(--hair)}
+.reason__btn{width:100%;display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:clamp(14px,3vw,32px);padding:clamp(20px,3.4vw,32px) 0;text-align:left;-webkit-tap-highlight-color:transparent}
+.reason__no{font:italic 500 clamp(1.2rem,1rem + 1vw,1.8rem)/1 var(--serif);color:var(--rose-d);min-width:2ch}
+.reason__title{font:500 clamp(1.4rem,1rem + 2vw,2.5rem)/1.12 var(--serif);transition:transform .5s var(--ease-out),color .3s}
+.reason__btn:hover .reason__title{transform:translateX(6px)}
+.reason__plus{width:28px;height:28px;position:relative;align-self:center}
+.reason__plus::before,.reason__plus::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:1px;background:var(--gold-d);transform:translate(-50%,-50%);transition:transform .5s var(--ease-out)}
+.reason__plus::after{transform:translate(-50%,-50%) rotate(90deg)}
+.reason.is-open .reason__plus::after{transform:translate(-50%,-50%) rotate(0)}
+.reason__panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .6s var(--ease-out)}
+.reason.is-open .reason__panel{grid-template-rows:1fr}
+.reason__inner{overflow:hidden}
+.reason__inner p{padding:0 0 clamp(22px,3.4vw,34px) calc(2ch + clamp(14px,3vw,32px));max-width:60ch;color:var(--ink-2)}
+@media(min-width:900px){
+  .reason:nth-child(even){margin-left:clamp(40px,9vw,140px)}
+}
+
+/* =========================================================
+   9. BAB IV — KAPSUL WAKTU & HARAPAN
+   ========================================================= */
+.future{margin-top:clamp(40px,7vw,80px);display:grid;gap:clamp(40px,6vw,72px)}
+.fgroup h3{font:italic 500 clamp(1.6rem,1.1rem + 2vw,2.4rem)/1.1 var(--serif);color:var(--rose-d);padding-bottom:14px;border-bottom:1px solid var(--hair)}
+.todo{width:100%;display:flex;gap:16px;align-items:flex-start;text-align:left;padding:14px 0;border-bottom:1px solid rgba(197,160,89,.22)}
+.todo__mark{flex:none;width:22px;height:22px;margin-top:.15em;border:1px solid var(--gold);border-radius:50%;position:relative;transition:background .3s,transform .3s var(--spring)}
+.todo__mark::after{content:"";position:absolute;left:6px;top:3px;width:6px;height:10px;border:solid var(--ink);border-width:0 1.5px 1.5px 0;transform:rotate(40deg) scale(0);transition:transform .3s var(--spring)}
+.todo[aria-pressed="true"] .todo__mark{background:var(--gold);transform:scale(1.06)}
+.todo[aria-pressed="true"] .todo__mark::after{transform:rotate(40deg) scale(1)}
+.todo[aria-pressed="true"] .todo__text{color:var(--ink-2);text-decoration:line-through;text-decoration-color:var(--gold)}
+.todo__text{transition:color .3s}
+@media(min-width:900px){
+  .future{grid-template-columns:1.25fr 1fr 1fr;align-items:start}
+  .fgroup:nth-child(2){margin-top:56px}
+  .fgroup:nth-child(3){margin-top:112px}
+}
+.capsule{margin-top:clamp(56px,9vw,110px);position:relative;max-width:720px;margin-inline:auto;text-align:center;padding:clamp(32px,6vw,64px) clamp(22px,5vw,56px);border:1px solid var(--hair)}
+.capsule::before{content:"";position:absolute;inset:8px;border:1px solid rgba(197,160,89,.28);pointer-events:none}
+.capsule__label{font:600 .7rem/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--gold-text)}
+.capsule__title{margin-top:14px;font:500 clamp(1.8rem,1.2rem + 2.4vw,2.8rem)/1.1 var(--serif)}
+.capsule__count{margin-top:6px;font:italic 400 1.2rem/1.4 var(--serif);color:var(--ink-2)}
+.capsule__count b{font-weight:500;font-style:normal;font-size:1.6em;color:var(--ink);padding-inline:.15em}
+.capsule textarea{display:block;width:100%;margin-top:24px;min-height:110px;padding:14px 16px;resize:vertical;border:1px solid var(--hair);border-radius:12px;background:rgba(255,255,255,.55);font:400 1rem/1.6 var(--sans);color:var(--ink)}
+.capsule textarea::placeholder{color:var(--ink-2);opacity:.8}
+.capsule .btn{margin-top:18px}
+.capsule__note{margin-top:12px;min-height:1.4em;font-size:.85rem;color:var(--ink-2)}
+
+/* =========================================================
+   10. PENUTUP
+   ========================================================= */
+.closing{text-align:center;padding-bottom:clamp(60px,10vw,120px)}
+.closing .chapter-mark{justify-content:center}
+.closing__msg{max-width:22ch;margin:0 auto;font:500 clamp(2.2rem,1.2rem + 4.8vw,4.6rem)/1.08 var(--serif);letter-spacing:-.01em}
+.closing__msg em{color:var(--rose-d)}
+.closing__text{margin:clamp(20px,3vw,32px) auto 0;max-width:46ch;color:var(--ink-2)}
+.closing__sign{margin-top:clamp(28px,5vw,48px);font:400 .9rem/1.5 var(--sans);color:var(--ink-2)}
+.closing__sign strong{display:block;font:italic 500 clamp(2rem,1.4rem + 2vw,2.8rem)/1.2 var(--serif);color:var(--ink)}
+.closing__sign::before{content:"";display:block;width:64px;height:1px;background:var(--gold);margin:0 auto 20px}
+.closing__btns{margin-top:clamp(32px,6vw,56px);display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.foot{padding:0 var(--gutter) 36px;text-align:center;font:500 .72rem/1.6 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+
+/* =========================================================
+   11. PREFERS-REDUCED-MOTION
+   ========================================================= */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important;transition-delay:0s!important}
+  .anim,.reveal,.node{opacity:1!important;transform:none!important}
+  .mask>span{transform:none!important}
+  .e-ring,.h-outline{stroke-dashoffset:0!important}
+  .hero__numeral{opacity:1}
+  .intro.is-leaving{transform:none;opacity:0;transition:opacity .4s ease!important}
+  .scrollcue i{transform:none;opacity:1}
+}
+</style>
+<noscript><style>.reveal,.anim,.node{opacity:1!important;transform:none!important}.mask>span{transform:none!important}.intro{display:none!important}.h-outline,.e-ring{stroke-dashoffset:0!important}</style></noscript>
+</head>
+
+<body>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<!-- =====================================================
+     INTRO
+     ===================================================== -->
+<div class="intro" id="intro" role="dialog" aria-modal="true" aria-label="Pembuka">
+  <button class="intro__skip anim i-line" id="introSkip" type="button" style="--i:0">Lewati</button>
+
+  <div class="intro__inner">
+    <div class="intro__float">
+      <svg class="intro__emblem" viewBox="0 0 240 240" aria-hidden="true">
+        <circle class="e-c e-c--l" cx="96"  cy="120" r="62" fill="#E8A0B5" fill-opacity=".55"/>
+        <circle class="e-c e-c--r" cx="144" cy="120" r="62" fill="#D9829B" fill-opacity=".38"/>
+        <circle class="e-ring" cx="120" cy="120" r="108" fill="none" stroke="#C5A059" stroke-width="1.2" pathLength="1" transform="rotate(-90 120 120)"/>
+        <text class="e-num anim" x="120" y="138" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="58" font-weight="500" fill="#2E1F24">02</text>
+        <circle class="e-dot anim" style="--i:0" cx="120" cy="12"  r="3" fill="#C5A059"/>
+        <circle class="e-dot anim" style="--i:1" cx="120" cy="228" r="3" fill="#C5A059"/>
+      </svg>
+    </div>
+
+    <p class="intro__eyebrow anim i-line" style="--i:0">2 Years Together</p>
+    <p class="intro__for anim i-line" style="--i:1">For</p>
+    <h2 class="intro__name anim i-line" style="--i:2;margin:4px 0 0">Fauziah Callysta Hidayat</h2>
+
+    <button class="btn anim i-line" id="introOpen" type="button">Buka Cerita Kita</button>
+  </div>
+</div>
+
+<!-- =====================================================
+     HALAMAN UTAMA
+     ===================================================== -->
+<main id="page">
+
+  <!-- ===== HERO ===== -->
+  <header class="hero" id="top">
+    <div class="hero__numeral" aria-hidden="true">02</div>
+    <div class="wrap">
+      <p class="eyebrow reveal" data-hero style="--d:.05s">Keepsake · Edisi Dua Tahun</p>
+
+      <h1 class="hero__title reveal-lines" data-hero>
+        <span class="mask"><span style="--d:.1s">2nd</span></span>
+        <span class="mask mask--it"><span style="--d:.22s">Anniversary</span></span>
+      </h1>
+
+      <p class="hero__for reveal" data-hero style="--d:.5s">untuk <strong>Fauziah Callysta Hidayat</strong></p>
+      <p class="hero__sub reveal" data-hero style="--d:.62s">Dua tahun yang tidak diukur dari besarnya kejutan, melainkan dari betapa tenangnya rasanya pulang kepadamu.</p>
+      <p class="hero__since reveal" data-hero style="--d:.74s">Sejak <span class="ph" id="startDateText">10 November 2024</span></p>
+
+      <dl class="hero__stats reveal" data-hero style="--d:.86s">
+        <div class="stat"><dt>Hari</dt><dd data-count="days">744</dd></div>
+        <div class="stat"><dt>Bulan</dt><dd data-count="months">24</dd></div>
+        <div class="stat"><dt>Tahun</dt><dd data-count="years">2</dd></div>
+      </dl>
+
+      <div class="scrollcue reveal" data-hero style="--d:1.1s"><i></i><span>Gulir pelan</span></div>
+    </div>
+  </header>
+
+  <!-- ===== CENTERPIECE: LOVE ===== -->
+  <section class="section section--tint" id="love" aria-labelledby="loveTitle">
+    <div class="wrap" id="heartStage">
+      <div class="love__head">
+        <div class="chapter-mark reveal"><i></i><span>Prolog</span><i></i></div>
+        <h2 class="h2 reveal" id="loveTitle" style="--d:.1s">Satu kalimat, <em>banyak bahasa</em></h2>
+        <p class="lede reveal" style="--d:.2s">Delapan belas cara mengatakan hal yang sama. Pilih satu, atau biarkan hati ini bergantian membacakannya untukmu.</p>
+      </div>
+
+      <div class="love__grid">
+        <div class="heart reveal" id="heart" style="--d:.1s">
+          <svg viewBox="0 0 400 360" aria-hidden="true" focusable="false">
+            <path class="h-fill" id="heartFill"/>
+            <path class="h-inner" id="heartInner"/>
+            <path class="h-outline" id="heartOutline" pathLength="1"/>
+            <g id="heartNodes"></g>
+            <circle class="comet" id="comet" r="3" cx="-10" cy="-10"/>
+          </svg>
+          <div class="heart__center" aria-hidden="true">
+            <p class="heart__phrase swap" id="hPhrase"></p>
+            <p class="heart__roman swap" id="hRoman"></p>
+          </div>
+        </div>
+
+        <div class="lang-panel">
+          <p class="lang-panel__count swap"><span id="lpIndex">01</span> / <span id="lpTotal">18</span></p>
+          <h3 class="lang-panel__lang swap" id="lpLang">English</h3>
+          <dl class="swap">
+            <div><dt>Cara baca</dt><dd id="lpPron"></dd></div>
+            <div><dt>Tentang ungkapan ini</dt><dd id="lpNote"></dd></div>
+          </dl>
+          <div class="ctrls">
+            <button class="ctrl" id="btnPrev" type="button" aria-label="Bahasa sebelumnya">&larr;</button>
+            <button class="ctrl" id="btnPlay" type="button" aria-pressed="false">Jeda</button>
+            <button class="ctrl" id="btnNext" type="button" aria-label="Bahasa berikutnya">&rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="chips reveal" id="chips" role="group" aria-label="Pilih bahasa"></div>
+    </div>
+  </section>
+
+  <!-- ===== BAB I: SURAT ===== -->
+  <section class="section" id="surat" aria-labelledby="suratTitle">
+    <div class="wrap letter">
+      <div class="letter__head">
+        <div class="chapter-mark reveal"><span>Bab I</span><i></i></div>
+        <h2 class="h2 reveal" id="suratTitle" style="--d:.1s">Surat dua tahun <em>untukmu</em></h2>
+        <p class="lede reveal" style="--d:.2s">Ditulis pelan-pelan, tanpa terburu-buru, seperti caramu mendengarkan.</p>
+      </div>
+
+      <!-- Teks bergaris-bawah emas (.ph) = bagian yang sebaiknya kamu ganti -->
+      <div class="letter__body">
+        <p class="letter__hello reveal">Untuk Callysta,</p>
+
+        <p class="reveal">Dua tahun lalu, aku belum tahu bahwa <span class="ph">10 November 2024</span> akan menjadi tanggal yang kuingat tanpa perlu diingatkan. Waktu itu semuanya terasa sederhana: <span class="ph">waktu kita bertemu di masa pengenalan sekolah</span>. Aku tidak punya rencana besar, hanya keinginan untuk tahu lebih jauh siapa kamu. Sampai hari ini, rasa ingin tahu itu belum juga habis.</p>
+
+        <p class="reveal">Kalau harus memilih satu hal untuk disyukuri hari ini, aku tidak akan memilih momen yang besar. Aku akan memilih hal-hal yang nyaris tak terlihat: pesanmu yang datang di jam yang tepat, caramu bertanya "sudah makan?" yang ternyata artinya jauh lebih dalam dari tiga kata itu, dan <span class="ph">kebiasaan kecilmu yang paling kusuka</span>. Dari situ aku belajar bahwa rasa sayang tidak selalu datang dengan suara keras.</p>
+
+        <p class="reveal">Dua tahun ini tidak selalu mudah, dan aku tidak ingin berpura-pura begitu. Ada hari ketika kita sama-sama lelah, salah paham, atau diam terlalu lama, misalnya <span class="ph">kita berantem hanya karena hal kecil</span>. Justru di situ aku belajar tentang kamu, dan tentang diriku sendiri. Kamu mengajariku sabar, juga <span class="ph">cara menjadi manusia yang sempurna</span>. Kita tumbuh, kadang searah, kadang bergantian menunggu yang lain menyusul. Aku bangga pada keduanya.</p>
+
+        <p class="reveal">Kehadiranmu membuat hidupku lebih tenang. Bukan karena masalah menghilang, tetapi karena aku tahu ada seseorang yang memilih berjalan di sampingku. <span class="ph">yaitu kamu</span>. Itu cukup bagiku, dan itu lebih dari yang pernah kuminta.</p>
+
+        <p class="reveal">Terima kasih sudah bertahan, sudah jujur, dan sudah tetap di sini. Aku tidak menjanjikan hari-hari yang sempurna. Yang kujanjikan lebih sederhana: aku akan terus belajar, terus hadir, dan terus memilihmu, <span class="ph">aku berjanji akan menjagamu seumur hidup</span>.</p>
+
+        <div class="letter__sign reveal">Dengan sayang,<strong class="ph" style="background:none">Muhammad Yusuf</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BAB II: LINIMASA ===== -->
+  <section class="section section--tint" id="waktu" aria-labelledby="waktuTitle">
+    <div class="wrap">
+      <div class="chapter-mark reveal"><span>Bab II</span><i></i></div>
+      <h2 class="h2 reveal" id="waktuTitle" style="--d:.1s">Perjalanan <em>waktu</em></h2>
+      <p class="lede reveal" style="--d:.2s">Dua tahun, dibagi menjadi beberapa bagian kecil supaya tidak ada yang terlewat.</p>
+
+      <ol class="timeline">
+        <li class="tl reveal">
+          <span class="tl__dot"></span>
+          <div class="tl__body">
+            <p class="tl__when"><span class="ph">14 juli 2024 &amp; Ignatius global school</span></p>
+            <h3 class="tl__title">Awal pertemuan</h3>
+            <p class="tl__text">Hari ketika dua orang yang masih asing mulai saling menoleh. Tidak ada yang tahu betapa panjang ceritanya nanti.</p>
+            <p class="tl__memory"><span class="ph">Ketika aku pertama kali melihatmu, aku tahu bahwa hidupku akan berbeda.</span></p>
+          </div>
+        </li>
+        <li class="tl reveal">
+          <span class="tl__dot"></span>
+          <div class="tl__body">
+            <p class="tl__when">Tahun pertama</p>
+            <h3 class="tl__title">Belajar memahami</h3>
+            <p class="tl__text">Mengenali nada suara saat lelah, makanan favorit, dan cara masing-masing menyelesaikan masalah.</p>
+            <p class="tl__memory"><span class="ph">Aku mulai memahami bahwa kamu tidak perlu selalu menjawab semua pertanyaan, dan itu tidak masalah.</span></p>
+          </div>
+        </li>
+        <li class="tl reveal">
+          <span class="tl__dot"></span>
+          <div class="tl__body">
+            <p class="tl__when">Di sela-sela hari</p>
+            <h3 class="tl__title">Momen kecil yang berarti</h3>
+            <p class="tl__text">Bukan perayaan besar, tetapi hal-hal yang diam-diam tinggal paling lama di ingatan.</p>
+            <p class="tl__memory"><span class="ph">Ketika kita sudah berjalan bersama dengan bebas karena sudah direstui oleh bumi dan langit.</span></p>
+          </div>
+        </li>
+        <li class="tl reveal">
+          <span class="tl__dot"></span>
+          <div class="tl__body">
+            <p class="tl__when">Tahun kedua</p>
+            <h3 class="tl__title">Tumbuh lebih kuat</h3>
+            <p class="tl__text">Kita tidak lagi sibuk membuktikan apa-apa. Lebih banyak tenang, lebih banyak percaya.</p>
+            <p class="tl__memory"><span class="ph">Lelah karena menjalani kehidupan yang lumayan keras tetapi kita lalui bersama.</span></p>
+          </div>
+        </li>
+        <li class="tl reveal">
+          <span class="tl__dot"></span>
+          <div class="tl__body">
+            <p class="tl__when">Hari ini</p>
+            <h3 class="tl__title">Dua tahun, dan masih memilihmu</h3>
+            <p class="tl__text">Bukan titik akhir, hanya jeda untuk menengok ke belakang sebentar sebelum melangkah lagi.</p>
+            <p class="tl__memory"><span class="ph">Kamu tetap bertahan disampingku.</span></p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== BAB III: HAL-HAL KECIL ===== -->
+  <section class="section" id="alasan" aria-labelledby="alasanTitle">
+    <div class="wrap">
+      <div class="chapter-mark reveal"><span>Bab III</span><i></i></div>
+      <h2 class="h2 reveal" id="alasanTitle" style="--d:.1s">Hal-hal kecil yang <em>kusuka darimu</em></h2>
+      <p class="lede reveal" style="--d:.2s">Ketuk satu per satu. Tidak ada urutan yang benar.</p>
+
+      <ol class="reasons" id="reasons">
+        <li class="reason reveal">
+          <button class="reason__btn" type="button" aria-expanded="false">
+            <span class="reason__no">01</span><span class="reason__title">Caramu tertawa</span><span class="reason__plus" aria-hidden="true"></span>
+          </button>
+          <div class="reason__panel"><div class="reason__inner"><p>Tawamu tidak pernah dibuat-buat. <span class="ph">Ketika aku membuat candaan kamu selalu tertawa dengan lepas dan itu membuatku merasa tenang.</span></p></div></div>
+        </li>
+        <li class="reason reveal">
+          <button class="reason__btn" type="button" aria-expanded="false">
+            <span class="reason__no">02</span><span class="reason__title">Kebiasaan kecilmu</span><span class="reason__plus" aria-hidden="true"></span>
+          </button>
+          <div class="reason__panel"><div class="reason__inner"><p>Ada kebiasaan yang mungkin tidak kamu sadari, tetapi aku selalu memperhatikannya. <span class="ph">Ketika kamu menggigit bibir saat berpikir, aku tahu kamu sedang mempertimbangkan sesuatu yang penting.</span></p></div></div>
+        </li>
+        <li class="reason reveal">
+          <button class="reason__btn" type="button" aria-expanded="false">
+            <span class="reason__no">03</span><span class="reason__title">Saat kamu diam, aku mengerti</span><span class="reason__plus" aria-hidden="true"></span>
+          </button>
+          <div class="reason__panel"><div class="reason__inner"><p>Setelah dua tahun, diammu tidak lagi membingungkan. <span class="ph">Ketika kamu diam, aku tahu kamu sedang memikirkan sesuatu yang penting.</span></p></div></div>
+        </li>
+        <li class="reason reveal">
+          <button class="reason__btn" type="button" aria-expanded="false">
+            <span class="reason__no">04</span><span class="reason__title">Caramu peduli pada orang lain</span><span class="reason__plus" aria-hidden="true"></span>
+          </button>
+          <div class="reason__panel"><div class="reason__inner"><p>Kepedulianmu tidak ribut, tetapi selalu sampai. <span class="ph">Ketika kamu membantu orang lain tanpa mengharapkan imbalan, itu membuatku merasa dihargai.</span></p></div></div>
+        </li>
+        <li class="reason reveal">
+          <button class="reason__btn" type="button" aria-expanded="false">
+            <span class="reason__no">05</span><span class="reason__title">Keras kepalamu</span><span class="reason__plus" aria-hidden="true"></span>
+          </button>
+          <div class="reason__panel"><div class="reason__inner"><p>Ya, kadang menyebalkan. Tapi itu juga alasan kamu tidak mudah menyerah. <span class="ph">Ketika kamu menghadapi tantangan dengan tekad, itu membuatku merasa aman.</span></p></div></div>
+        </li>
+        <li class="reason reveal">
+          <button class="reason__btn" type="button" aria-expanded="false">
+            <span class="reason__no">06</span><span class="reason__title">Selera dan pilihanmu</span><span class="reason__plus" aria-hidden="true"></span>
+          </button>
+          <div class="reason__panel"><div class="reason__inner"><p>Dari makanan, lagu, sampai tempat favorit. <span class="ph">Kecantikanmu yang sederhana namun autentik.</span></p></div></div>
+        </li>
+        <li class="reason reveal">
+          <button class="reason__btn" type="button" aria-expanded="false">
+            <span class="reason__no">07</span><span class="reason__title">Suaramu di ujung hari</span><span class="reason__plus" aria-hidden="true"></span>
+          </button>
+          <div class="reason__panel"><div class="reason__inner"><p>Ada hari-hari yang berat, lalu mendengar suaramu membuat semuanya terasa lebih pelan. <span class="ph">Setiap kita deep talk, aku merasa lebih paham tentangmu.</span></p></div></div>
+        </li>
+        <li class="reason reveal">
+          <button class="reason__btn" type="button" aria-expanded="false">
+            <span class="reason__no">08</span><span class="reason__title">Caramu bertahan</span><span class="reason__plus" aria-hidden="true"></span>
+          </button>
+          <div class="reason__panel"><div class="reason__inner"><p>Kamu tetap di sini, bahkan di hari-hari ketika aku bukan versi terbaik diriku. <span class="ph">Terima kasih karena kamu tetap ada, meskipun aku tidak selalu mudah.</span></p></div></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== BAB IV: KAPSUL WAKTU ===== -->
+  <section class="section section--tint" id="depan" aria-labelledby="depanTitle">
+    <div class="wrap">
+      <div class="chapter-mark reveal"><span>Bab IV</span><i></i></div>
+      <h2 class="h2 reveal" id="depanTitle" style="--d:.1s">Bab-bab <em>selanjutnya</em></h2>
+      <p class="lede reveal" style="--d:.2s">Belum ditulis, tetapi sudah kita bayangkan bersama. Centang yang sudah terasa dekat.</p>
+
+      <div class="future">
+        <div class="fgroup reveal">
+          <h3>Impian</h3>
+          <ul>
+            <li><button class="todo" type="button" aria-pressed="false"><span class="todo__mark"></span><span class="todo__text"><span class="ph">[Perjalanan impian kita]</span></span></button></li>
+            <li><button class="todo" type="button" aria-pressed="false"><span class="todo__mark"></span><span class="todo__text"><span class="ph">[Tempat yang ingin kita tinggali suatu hari]</span></span></button></li>
+            <li><button class="todo" type="button" aria-pressed="false"><span class="todo__mark"></span><span class="todo__text"><span class="ph">[Sesuatu yang ingin kita bangun bersama]</span></span></button></li>
+          </ul>
+        </div>
+        <div class="fgroup reveal" style="--d:.12s">
+          <h3>Rencana sederhana</h3>
+          <ul>
+            <li><button class="todo" type="button" aria-pressed="false"><span class="todo__mark"></span><span class="todo__text">Makan malam tanpa gawai, sebulan sekali</span></button></li>
+            <li><button class="todo" type="button" aria-pressed="false"><span class="todo__mark"></span><span class="todo__text"><span class="ph">[Tempat baru yang ingin dikunjungi bulan ini]</span></span></button></li>
+            <li><button class="todo" type="button" aria-pressed="false"><span class="todo__mark"></span><span class="todo__text">Menulis satu hal yang disyukuri tiap akhir pekan</span></button></li>
+          </ul>
+        </div>
+        <div class="fgroup reveal" style="--d:.24s">
+          <h3>Harapan</h3>
+          <ul>
+            <li><button class="todo" type="button" aria-pressed="false"><span class="todo__mark"></span><span class="todo__text">Tetap jujur, bahkan saat sulit</span></button></li>
+            <li><button class="todo" type="button" aria-pressed="false"><span class="todo__mark"></span><span class="todo__text">Saling memberi ruang untuk tumbuh</span></button></li>
+            <li><button class="todo" type="button" aria-pressed="false"><span class="todo__mark"></span><span class="todo__text"><span class="ph">[Harapan paling pribadimu]</span></span></button></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="capsule reveal">
+        <p class="capsule__label">Kapsul waktu</p>
+        <h3 class="capsule__title">Dibuka lagi di 3rd Anniversary</h3>
+        <p class="capsule__count" id="capsuleCount"></p>
+        <label for="wish" class="capsule__label" style="display:block;margin-top:28px">Satu harapan untuk dibaca nanti</label>
+        <textarea id="wish" maxlength="600" placeholder="Tulis satu kalimat yang ingin kamu temukan lagi setahun dari sekarang."></textarea>
+        <button class="btn btn--ghost" id="wishSave" type="button">Simpan di kapsul</button>
+        <p class="capsule__note" id="wishNote" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PENUTUP ===== -->
+  <section class="section closing" id="penutup" aria-labelledby="penutupTitle">
+    <div class="wrap">
+      <div class="chapter-mark reveal"><i></i><span>Penutup</span><i></i></div>
+      <h2 class="closing__msg reveal" id="penutupTitle" style="--d:.1s">Dua tahun ini indah, dan <em>aku belum selesai</em> memilihmu.</h2>
+      <p class="closing__text reveal" style="--d:.2s">Selamat dua tahun, Callysta. Terima kasih sudah menjadi tempat paling tenang yang pernah kutemukan. <span class="ph">Aku bakal selalu cinta sama kamu! apapun yang terjadi bahkan itu yang terburuk sekalipun tidak akan mengubah cara pandangku ke kamu baby!</span></p>
+      <p class="closing__sign reveal" style="--d:.3s">Selalu milikmu,<strong class="ph" style="background:none">Kak Yusuf</strong></p>
+      <div class="closing__btns reveal" style="--d:.4s">
+        <button class="btn btn--ghost" id="btnReplay" type="button">Putar ulang intro</button>
+        <button class="btn" id="btnTop" type="button">Kembali ke atas</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot">Dibuat dengan sepenuh hati &middot; <span class="ph" style="background:none">10.11.2026</span></p>
+</main>
+
+<script>
+/* =========================================================
+   JAVASCRIPT — modern, tanpa library
+   ========================================================= */
+(() => {
+  'use strict';
+
+  /* ---------- KONFIGURASI (ubah tanggal di sini) ---------- */
+  const CONFIG = {
+    startDate: '2024-11-10',          // tanggal jadian
+    anniversaryDate: '2026-11-10',    // 2nd anniversary
+    nextAnniversaryDate: '2027-11-10',// 3rd anniversary (hitung mundur kapsul)
+    locale: 'id-ID',
+  };
+
+  /* ---------- DAFTAR BAHASA "I LOVE YOU" (edit/tambah di sini) ---------- */
+  const LANGS = [
+    { lang:'English',   code:'en', text:'I Love You',        pron:'ai lav yu',          note:'Tiga kata yang paling sering diucapkan di dunia: sederhana dan tanpa basa-basi.' },
+    { lang:'Indonesia', code:'id', text:'Aku Cinta Kamu',    pron:'a-ku chin-ta ka-mu', note:'Bahasa kita sehari-hari, yang paling jujur dan paling dekat.' },
+    { lang:'Prancis',   code:'fr', text:"Je t'aime",         pron:'zhuh tem',           note:'Bahasa yang sering dijuluki bahasa cinta; "aimer" bisa berarti menyukai sekaligus mencintai.' },
+    { lang:'Spanyol',   code:'es', text:'Te amo',            pron:'te a-mo',            note:'"Te amo" untuk cinta yang dalam; rasa sayang yang lebih ringan biasanya "te quiero".' },
+    { lang:'Italia',    code:'it', text:'Ti amo',            pron:'ti a-mo',            note:'Dipakai untuk pasangan; untuk keluarga dan sahabat dipakai "ti voglio bene".' },
+    { lang:'Jepang',    code:'ja', text:'愛してる', roman:'Aishiteru', pron:'ai-shi-te-ru', note:'Jarang diucapkan langsung di Jepang, sehingga ketika terdengar, bobotnya terasa besar.' },
+    { lang:'Korea',     code:'ko', text:'사랑해', roman:'Saranghae', pron:'sa-rang-hae', note:'Bentuk akrab dan hangat untuk orang yang dekat.' },
+    { lang:'Arab',      code:'ar', dir:'rtl', text:'أحبك', roman:'Uhibbuki', pron:'u-hib-bu-ki', note:'Ditulis dari kanan ke kiri. Kepada perempuan dibaca "uhibbuki", kepada laki-laki "uhibbuka".' },
+    { lang:'Jerman',    code:'de', text:'Ich liebe dich',    pron:'ikh lee-be dikh',    note:'Tegas dan lugas, sangat khas bahasanya.' },
+    { lang:'Portugis',  code:'pt', text:'Eu te amo',         pron:'e-u te a-mo',        note:'Dipakai di Portugal dan Brasil, hangat di keduanya.' },
+    { lang:'Turki',     code:'tr', text:'Seni seviyorum',    pron:'se-ni se-vi-yo-rum', note:'Bentuk "-iyor" menandakan perasaan yang sedang dan terus berlangsung.' },
+    { lang:'Mandarin',  code:'zh', text:'我爱你', roman:'Wǒ ài nǐ', pron:'wo ai ni', note:'Tiga karakter: aku, cinta, kamu.' },
+    { lang:'Rusia',     code:'ru', text:'Я люблю тебя', roman:'Ya lyublyu tebya', pron:'ya lyu-blyu te-bya', note:'Ditulis dengan aksara Sirilik; "lyublyu" adalah kata untuk mencintai.' },
+    { lang:'Belanda',   code:'nl', text:'Ik hou van jou',    pron:'ik hau fan yau',     note:'Hangat dan membumi, sangat Belanda.' },
+    { lang:'Yunani',    code:'el', text:"Σ' αγαπώ", roman:"S'agapó", pron:'sa-ga-PO', note:'Berakar dari kata "agape", cinta yang tulus dan penuh kesadaran.' },
+    { lang:'Swahili',   code:'sw', text:'Nakupenda',         pron:'na-ku-pen-da',       note:'Satu kata yang sudah memuat tiga hal sekaligus: aku, cinta, dan kamu.' },
+  ];
+
+  /* ---------- HELPER ---------- */
+  const $  = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const root = document.documentElement;
+  const reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const reduce = () => reduceMQ.matches;
+  const pad = n => String(n).padStart(2, '0');
+  const parseDate = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+  /* =========================================================
+     A. HERO — TANGGAL & PENGHITUNG
+     ========================================================= */
+  const start = parseDate(CONFIG.startDate);
+  const anniv = parseDate(CONFIG.anniversaryDate);
+  const totalDays = Math.max(0, Math.round((anniv - start) / 86400000));
+  let totalMonths = (anniv.getFullYear() - start.getFullYear()) * 12 + (anniv.getMonth() - start.getMonth());
+  if (anniv.getDate() < start.getDate()) totalMonths -= 1;
+  const totalYears = Math.floor(totalMonths / 12);
+  const COUNTS = { days: totalDays, months: totalMonths, years: totalYears };
+
+  $('#startDateText').textContent = start.toLocaleDateString(CONFIG.locale, { day: 'numeric', month: 'long', year: 'numeric' });
+  $$('[data-count]').forEach(el => { el.textContent = COUNTS[el.dataset.count]; });
+
+  function runCounters() {
+    $$('[data-count]').forEach(el => {
+      const target = COUNTS[el.dataset.count];
+      if (reduce()) { el.textContent = target; return; }
+      const t0 = performance.now(), dur = 1800;
+      const tick = now => {
+        const p = Math.min(1, (now - t0) / dur);
+        const eased = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+        el.textContent = Math.round(target * eased);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+  }
+
+  /* Hitung mundur kapsul waktu */
+  (() => {
+    const next = parseDate(CONFIG.nextAnniversaryDate);
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const days = Math.max(0, Math.round((next - today) / 86400000));
+    $('#capsuleCount').innerHTML = days > 0
+      ? `Tinggal <b>${days}</b> hari lagi`
+      : 'Waktunya dibuka';
+  })();
+
+  /* =========================================================
+     B. INTRO CONTROLLER
+     ========================================================= */
+  const intro = $('#intro');
+  const page = $('#page');
+  const btnOpen = $('#introOpen');
+  let leaving = false, heroStarted = false;
+
+  const setLocked = on => {
+    root.classList.toggle('is-locked', on);
+    page.inert = on;
+  };
+
+  function startHero() {
+    if (heroStarted) return;
+    heroStarted = true;
+    document.body.classList.add('is-ready');
+    $$('[data-hero]').forEach(el => el.classList.add('in'));
+    runCounters();
+  }
+
+  function playIntro() {
+    leaving = false; heroStarted = false;
+    intro.hidden = false;
+    intro.classList.remove('is-leaving', 'is-fast', 'is-playing');
+    document.body.classList.remove('is-ready');
+    $$('[data-hero]').forEach(el => el.classList.remove('in'));
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    setLocked(true);
+    void intro.offsetWidth; // reflow agar animasi mulai ulang
+    intro.classList.add('is-playing');
+    setTimeout(() => btnOpen.focus({ preventScroll: true }), 50);
+  }
+
+  function leaveIntro(fast) {
+    if (leaving) return;
+    leaving = true;
+    const dur = reduce() ? 400 : (fast ? 700 : 1000);
+    intro.classList.add('is-leaving');
+    if (fast) intro.classList.add('is-fast');
+    setTimeout(startHero, reduce() ? 0 : Math.round(dur * 0.35)); // hero mulai saat tirai naik
+    setTimeout(() => {
+      intro.hidden = true;
+      setLocked(false);
+      $('#top').focus?.({ preventScroll: true });
+    }, dur + 30);
+  }
+
+  btnOpen.addEventListener('click', () => leaveIntro(false));
+  $('#introSkip').addEventListener('click', () => leaveIntro(true));
+  window.addEventListener('keydown', e => { if (e.key === 'Escape' && !intro.hidden) leaveIntro(true); });
+
+  /* =========================================================
+     C. SCROLL REVEAL (sekali) + PROGRESS BAR
+     ========================================================= */
+  const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) { en.target.classList.add('in'); obs.unobserve(en.target); }
+    });
+  }, { threshold: 0.14, rootMargin: '0px 0px -6% 0px' });
+  $$('.reveal:not([data-hero])').forEach(el => io.observe(el));
+
+  const bar = $('#progress');
+  let ticking = false;
+  const updateProgress = () => {
+    const h = root.scrollHeight - window.innerHeight;
+    bar.style.transform = `scaleX(${h > 0 ? Math.min(1, window.scrollY / h) : 0})`;
+    ticking = false;
+  };
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(updateProgress); } }, { passive: true });
+  window.addEventListener('resize', updateProgress);
+
+  /* =========================================================
+     D. ANIMASI HATI "I LOVE YOU"
+     ========================================================= */
+  const heartEl = $('#heart');
+  const outline = $('#heartOutline');
+  const nodesG = $('#heartNodes');
+  const comet = $('#comet');
+  const chipsWrap = $('#chips');
+  const stage = $('#heartStage');
+  const NS = 'http://www.w3.org/2000/svg';
+  const N = LANGS.length;
+
+  // Bentuk hati dari persamaan parametrik, dipusatkan di viewBox 400x360
+  const heartPoint = t => {
+    const x = 16 * Math.sin(t) ** 3;
+    const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+    return [200 + 11 * x, 180 - 11 * (y + 2.5)];
+  };
+  let d = '';
+  for (let i = 0; i <= 240; i++) {
+    const [x, y] = heartPoint((i / 240) * Math.PI * 2);
+    d += (i ? 'L' : 'M') + x.toFixed(2) + ' ' + y.toFixed(2);
+  }
+  d += 'Z';
+  ['heartFill', 'heartInner', 'heartOutline'].forEach(id => $('#' + id).setAttribute('d', d));
+  const pathLen = outline.getTotalLength();
+
+  // Titik bahasa di sepanjang garis hati
+  const nodes = [], chips = [];
+  LANGS.forEach((L, i) => {
+    const p = outline.getPointAtLength((pathLen * i) / N);
+    const g = document.createElementNS(NS, 'g');
+    g.setAttribute('class', 'node');
+    g.style.setProperty('--d', (1.2 + i * 0.07) + 's');
+    const hit = document.createElementNS(NS, 'circle');
+    hit.setAttribute('class', 'node__hit'); hit.setAttribute('cx', p.x); hit.setAttribute('cy', p.y); hit.setAttribute('r', 15);
+    const dot = document.createElementNS(NS, 'circle');
+    dot.setAttribute('class', 'node__dot'); dot.setAttribute('cx', p.x); dot.setAttribute('cy', p.y); dot.setAttribute('r', 3.4);
+    g.append(hit, dot);
+    g.addEventListener('click', () => select(i, true));
+    nodesG.appendChild(g); nodes.push(g);
+
+    const chip = document.createElement('button');
+    chip.type = 'button'; chip.className = 'chip'; chip.textContent = L.lang;
+    chip.setAttribute('aria-pressed', 'false');
+    chip.addEventListener('click', () => select(i, true));
+    chipsWrap.appendChild(chip); chips.push(chip);
+  });
+  $('#lpTotal').textContent = pad(N);
+
+  // Tampilkan bahasa terpilih (crossfade)
+  let current = -1, playing = !reduce(), swapT = null;
+  const hPhrase = $('#hPhrase'), hRoman = $('#hRoman');
+  function show(i, instant) {
+    if (i === current) return;
+    current = i;
+    nodes.forEach((n, k) => n.classList.toggle('is-active', k === i));
+    chips.forEach((c, k) => c.setAttribute('aria-pressed', String(k === i)));
+    const L = LANGS[i];
+    const apply = () => {
+      hPhrase.textContent = L.text; hPhrase.lang = L.code; hPhrase.dir = L.dir || 'ltr';
+      hRoman.textContent = L.roman || '';
+      hRoman.style.display = L.roman ? '' : 'none';
+      $('#lpIndex').textContent = pad(i + 1);
+      $('#lpLang').textContent = L.lang;
+      $('#lpPron').textContent = L.pron;
+      $('#lpNote').textContent = L.note;
+      stage.classList.remove('is-swapping');
+    };
+    clearTimeout(swapT);
+    if (instant || reduce()) { apply(); return; }
+    stage.classList.add('is-swapping');
+    swapT = setTimeout(apply, 260);
+  }
+
+  const btnPlay = $('#btnPlay');
+  function setPlaying(on) {
+    playing = on;
+    btnPlay.textContent = on ? 'Jeda' : 'Putar';
+    btnPlay.setAttribute('aria-pressed', String(!on));
+  }
+  function select(i, byUser) {
+    if (byUser) setPlaying(false);
+    show((i + N) % N);
+  }
+  $('#btnPrev').addEventListener('click', () => select(current - 1, true));
+  $('#btnNext').addEventListener('click', () => select(current + 1, true));
+  btnPlay.addEventListener('click', () => setPlaying(!playing));
+
+  show(0, true);
+  setPlaying(playing);
+
+  // Auto-advance hanya saat hati terlihat
+  let heartVisible = false;
+  new IntersectionObserver(es => { heartVisible = es[0].isIntersecting; }, { threshold: 0.25 }).observe(heartEl);
+  setInterval(() => {
+    if (playing && heartVisible && !document.hidden) show((current + 1) % N);
+  }, 3800);
+
+  // Komet emas kecil yang menyusuri garis hati
+  (function loop(now) {
+    if (heartVisible && !reduce() && !document.hidden) {
+      const p = outline.getPointAtLength((((now || 0) / 9000) % 1) * pathLen);
+      comet.setAttribute('cx', p.x); comet.setAttribute('cy', p.y);
+    }
+    requestAnimationFrame(loop);
+  })();
+
+  /* =========================================================
+     E. ACCORDION "HAL-HAL KECIL"
+     ========================================================= */
+  $$('.reason').forEach(item => {
+    const btn = $('.reason__btn', item);
+    btn.addEventListener('click', () => {
+      const open = item.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+  });
+
+  /* =========================================================
+     F. CHECKLIST & KAPSUL WAKTU
+     ========================================================= */
+  $$('.todo').forEach(b => b.addEventListener('click', () => {
+    b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'));
+  }));
+
+  const wish = $('#wish'), wishNote = $('#wishNote'), KEY = 'anniv2-fauziah-wish';
+  try { const saved = localStorage.getItem(KEY); if (saved) { wish.value = saved; wishNote.textContent = 'Harapanmu sudah tersimpan di perangkat ini.'; } } catch (_) {}
+  $('#wishSave').addEventListener('click', () => {
+    const v = wish.value.trim();
+    if (!v) { wishNote.textContent = 'Tulis satu kalimat dulu, ya.'; return; }
+    try { localStorage.setItem(KEY, v); wishNote.textContent = 'Tersimpan di kapsul, hanya di perangkat ini.'; }
+    catch (_) { wishNote.textContent = 'Penyimpanan tidak tersedia di browser ini.'; }
+  });
+
+  /* =========================================================
+     G. PENUTUP — REPLAY & KEMBALI KE ATAS
+     ========================================================= */
+  $('#btnReplay').addEventListener('click', playIntro);
+  $('#btnTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduce() ? 'auto' : 'smooth' }));
+
+  /* =========================================================
+     H. MULAI
+     ========================================================= */
+  playIntro();
+  updateProgress();
+})();
+</script>
+</body>
+</html>
